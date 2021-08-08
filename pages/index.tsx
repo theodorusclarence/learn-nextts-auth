@@ -1,12 +1,21 @@
+import { useState } from 'react';
+
+import { useAuthDispatch, useAuthState } from '@/context/AuthContext';
+import { sleep } from '@/lib/helper';
+
 import Seo from '@/components/Seo';
 import CustomLink from '@/components/CustomLink';
 import Button from '@/components/Button';
-import { useAuthDispatch, useAuthState } from '@/context/AuthContext';
 
 export default function Home() {
   const { authenticated, loading } = useAuthState();
   const dispatch = useAuthDispatch();
-  const handleLogin = () => {
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    await sleep(500);
     dispatch({
       type: 'LOGIN',
       payload: {
@@ -15,6 +24,7 @@ export default function Home() {
       },
     });
     localStorage.setItem('token', 'nice');
+    setIsLoading(false);
   };
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
@@ -33,9 +43,12 @@ export default function Home() {
                 Auth Context TS Example
               </CustomLink>
             </h1>
-            <CustomLink className='mt-4' href='/protect'>
-              Go to /protect
-            </CustomLink>
+            <div className='flex gap-4 mt-8'>
+              <CustomLink href='/protect'>Go to /protect</CustomLink>
+              <CustomLink openNewTab={true} href='/protect'>
+                Go to /protect (new tab)
+              </CustomLink>
+            </div>
 
             <div className='mt-8'>
               {loading ? (
@@ -43,7 +56,12 @@ export default function Home() {
               ) : authenticated ? (
                 <Button onClick={handleLogout}>Logout</Button>
               ) : (
-                <Button variant='secondary' onClick={handleLogin}>
+                <Button
+                  disabled={isLoading}
+                  className='disabled:brightness-75 disabled:cursor-wait'
+                  variant='secondary'
+                  onClick={handleLogin}
+                >
                   Login
                 </Button>
               )}

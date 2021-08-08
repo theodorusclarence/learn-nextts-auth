@@ -24,12 +24,10 @@ export default function ProtectPage() {
           <p className='mt-2'>
             You are {authenticated ? 'logged in' : 'not logged in'}
           </p>
-          <Button className='block mt-8' onClick={handleLogout}>
-            Logout
-          </Button>
-          <CustomLink className='mt-2' href='/'>
-            Back to home
-          </CustomLink>
+          <div className='flex gap-4 mt-8'>
+            <CustomLink href='/'>← Back to home</CustomLink>
+            <Button onClick={handleLogout}>Logout</Button>
+          </div>
         </article>
       </section>
     </>
