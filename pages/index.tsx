@@ -1,7 +1,26 @@
 import Seo from '@/components/Seo';
 import CustomLink from '@/components/CustomLink';
+import Button from '@/components/Button';
+import { useAuthDispatch, useAuthState } from '@/context/AuthContext';
 
 export default function Home() {
+  const { authenticated, loading } = useAuthState();
+  const dispatch = useAuthDispatch();
+  const handleLogin = () => {
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        email: 'bambang@gmail.com',
+        name: 'bambang',
+      },
+    });
+    localStorage.setItem('token', 'nice');
+  };
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    localStorage.removeItem('token');
+  };
+
   return (
     <>
       <Seo templateTitle='Home' />
@@ -9,23 +28,34 @@ export default function Home() {
       <main>
         <section className='bg-dark'>
           <div className='flex flex-col items-center justify-center min-h-screen text-white layout'>
-            <h1>
-              <CustomLink href='https://github.com/theodorusclarence/ts-nextjs-tailwind-starter'>
-                Typescript NextJS Tailwind Starter
+            <h1 className='text-center'>
+              <CustomLink href='https://github.com/theodorusclarence/learn-nextts-auth'>
+                Auth Context TS Example
               </CustomLink>
             </h1>
-            <p className='mb-4'></p>
-            <a
-              target='_blank'
-              rel='noopener noreferrer'
-              href='https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftheodorusclarence%2Fts-nextjs-tailwind-starter'
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src='https://vercel.com/button' alt='Deploy with Vercel' />
-            </a>
-            <div className='mt-8 text-dark'>
-              <p className='text-[#ffe347]'>JIT is on</p>
+            <CustomLink className='mt-4' href='/protect'>
+              Go to /protect
+            </CustomLink>
+
+            <div className='mt-8'>
+              {loading ? (
+                <div className='p-1 bg-gray-500 animate-pulse'>loading...</div>
+              ) : authenticated ? (
+                <Button onClick={handleLogout}>Logout</Button>
+              ) : (
+                <Button variant='secondary' onClick={handleLogin}>
+                  Login
+                </Button>
+              )}
             </div>
+            <p className='mt-2'>
+              Auth Status:{' '}
+              {loading
+                ? 'loading..'
+                : authenticated
+                ? 'logged in'
+                : 'not logged in'}
+            </p>
             <footer className='absolute text-gray-500 bottom-2'>
               © {new Date().getFullYear()} By{' '}
               <CustomLink href='https://theodorusclarence.com?ref=tsnextstarter'>
