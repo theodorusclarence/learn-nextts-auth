@@ -2,10 +2,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 const defaultMeta = {
-  title: 'Next.js Tailwind Starter',
-  site_name: 'Next.js Tailwind Starter',
-  description: 'A template for Next.js and Tailwindcss by Theodorus Clarence',
-  url: 'https://theodorusclarence.com',
+  title: 'Auth Context Typescript',
+  site_name: 'Auth Context Typescript',
+  description: 'Auth Context Example for Typescript',
+  url: 'https://ts-auth.theodorusclarence.com',
   image: 'https://theodorusclarence.com/favicon/large-og.jpg',
   type: 'website',
   robots: 'follow, index',
